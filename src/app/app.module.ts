@@ -3,11 +3,15 @@ import { NgModule } from '@angular/core';
 
 
 import { AppComponent } from './app.component';
+import { PasswordValidatorDirective } from './password-validator.directive';
+import { PasswordValidatorComponent } from './password-validator/password-validator.component';
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    PasswordValidatorDirective,
+    PasswordValidatorComponent
   ],
   imports: [
     BrowserModule
