@@ -1,50 +1,35 @@
 import {
   Component,
-  OnInit,
   HostListener,
   Input,
   EventEmitter,
   Output
 } from '@angular/core';
-
-interface Error {
-  num: boolean;
-  letter: boolean;
-  caps: boolean;
-  special: boolean;
-  min: boolean;
-  match: boolean;
-}
-
-export interface Response {
-  password: string;
-  valid: boolean;
-  confirm: boolean;
-}
+import { Error, Response } from '../../models/models';
 
 @Component({
   selector: 'app-password-validator',
   templateUrl: './password-validator.component.html',
   styleUrls: ['./password-validator.component.scss']
 })
-export class PasswordValidatorComponent implements OnInit {
+export class PasswordValidatorComponent {
   // Hide and Show of the Error Messages
   show = false;
 
-  // Flag for confirm password field
   @Input()
-  confirm = false;
+  pwd: PasswordValidatorComponent;
 
-  // Password string
-  value: string;
-
-  // Password string to match with
   @Input()
-  matchWith: string;
+  cpwd: PasswordValidatorComponent;
 
+  // Output Event
   @Output()
   password = new EventEmitter<Response>();
 
+  // Password
+  text: string;
+
+  // Error Object
   error: Error = {
     num: true,
     letter: true,
@@ -55,22 +40,18 @@ export class PasswordValidatorComponent implements OnInit {
   };
 
   private hasError() {
-    let hasError =
+    return (
       this.error.letter ||
       this.error.min ||
       this.error.num ||
-      this.error.special;
-
-    if (this.confirm) {
-      hasError = hasError || this.error.match;
-    }
-
-    return hasError;
+      this.error.special ||
+      this.error.match
+    );
   }
 
-  constructor() {}
-
-  ngOnInit() {}
+  private passwordMatch() {
+    return this.text === (this.pwd ? this.pwd.text : this.cpwd.text);
+  }
 
   onFocus(e) {
     this.show = true;
@@ -97,25 +78,19 @@ export class PasswordValidatorComponent implements OnInit {
   }
 
   onInput(e) {
-    this.value = e.target.value;
-
+    this.text = e.target.value;
     const numRegex = /\d/;
     const letterRegex = /[A-Za-z]/;
     const specialRegex = /^[ A-Za-z0-9@!#$]*$/;
-
-    this.error.num = !numRegex.test(this.value);
-    this.error.letter = !letterRegex.test(this.value);
-    this.error.special = !specialRegex.test(this.value);
-    this.error.min = this.value.length < 8;
-
-    if (this.confirm) {
-      this.error.match = this.value !== this.matchWith;
-    }
+    this.error.num = !numRegex.test(this.text);
+    this.error.letter = !letterRegex.test(this.text);
+    this.error.special = !specialRegex.test(this.text);
+    this.error.min = this.text.length < 8;
+    this.error.match = !this.passwordMatch();
 
     this.password.emit({
-      password: this.value,
-      valid: !this.hasError(),
-      confirm: this.confirm
+      password: this.text,
+      valid: !this.hasError()
     });
   }
 }

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Response } from './password-validator/password-validator.component';
+import { Response } from '../models/models';
 
 @Component({
   selector: 'app-root',

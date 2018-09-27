@@ -1,5 +1,5 @@
 <pre>
 {{response | json}}
 </pre>
-<app-password-validator #pwd (password)="data($event)"></app-password-validator>
-<app-password-validator [confirm]="true" [matchWith]="pwd.value" (password)="data($event)"></app-password-validator>
+<app-password-validator #pwd [cpwd]="cpwd" (password)="data($event)"></app-password-validator>
+<app-password-validator #cpwd [pwd]="pwd" (password)="data($event)"></app-password-validator>
