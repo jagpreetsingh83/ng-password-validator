@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Response } from './password-validator/password-validator.component';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'app';
+  response: Response;
+
+  data(value: Response) {
+    this.response = value;
+  }
 }

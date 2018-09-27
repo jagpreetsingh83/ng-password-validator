@@ -1,4 +1,11 @@
-import { Component, OnInit, HostListener, Input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  HostListener,
+  Input,
+  EventEmitter,
+  Output
+} from '@angular/core';
 
 interface Error {
   num: boolean;
@@ -7,6 +14,12 @@ interface Error {
   special: boolean;
   min: boolean;
   match: boolean;
+}
+
+export interface Response {
+  password: string;
+  valid: boolean;
+  confirm: boolean;
 }
 
 @Component({
@@ -28,6 +41,9 @@ export class PasswordValidatorComponent implements OnInit {
   // Password string to match with
   @Input()
   matchWith: string;
+
+  @Output()
+  password = new EventEmitter<Response>();
 
   error: Error = {
     num: true,
@@ -95,5 +111,11 @@ export class PasswordValidatorComponent implements OnInit {
     if (this.confirm) {
       this.error.match = this.value !== this.matchWith;
     }
+
+    this.password.emit({
+      password: this.value,
+      valid: !this.hasError(),
+      confirm: this.confirm
+    });
   }
 }
