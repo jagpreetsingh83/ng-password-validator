@@ -34,6 +34,10 @@ export class PasswordValidatorComponent implements OnInit {
   @Input()
   response: Subject<Response>;
 
+  get confirm() {
+    return !!this.pwd;
+  }
+
   // Error Object
   error: Error = {
     num: true,
