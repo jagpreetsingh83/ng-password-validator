@@ -3,16 +3,18 @@ import {
   HostListener,
   Input,
   EventEmitter,
-  Output
+  Output,
+  OnInit
 } from '@angular/core';
 import { Error, Response } from '../../models/models';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-password-validator',
   templateUrl: './password-validator.component.html',
   styleUrls: ['./password-validator.component.scss']
 })
-export class PasswordValidatorComponent {
+export class PasswordValidatorComponent implements OnInit {
   // Hide and Show of the Error Messages
   show = false;
 
@@ -29,6 +31,9 @@ export class PasswordValidatorComponent {
   // Password
   text: string;
 
+  @Input()
+  response: Subject<Response>;
+
   // Error Object
   error: Error = {
     num: true,
@@ -38,6 +43,17 @@ export class PasswordValidatorComponent {
     min: true,
     match: false
   };
+
+  ngOnInit() {
+    // This is to handle the message box if validations are updated from the other input field
+    if (this.response) {
+      this.response.subscribe(data => {
+        if (this.text) {
+          this.show = !data.valid;
+        }
+      });
+    }
+  }
 
   private hasError() {
     return (

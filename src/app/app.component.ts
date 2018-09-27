@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Response } from '../models/models';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-root',
@@ -7,9 +8,9 @@ import { Response } from '../models/models';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  response: Response;
+  response = new Subject<Response>();
 
   data(value: Response) {
-    this.response = value;
+    this.response.next(value);
   }
 }

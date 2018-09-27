@@ -1,5 +1,5 @@
 <pre>
-{{response | json}}
+{{response | async | json}}
 </pre>
 <app-password-validator #pwd [cpwd]="cpwd" (password)="data($event)"></app-password-validator>
-<app-password-validator #cpwd [pwd]="pwd" (password)="data($event)"></app-password-validator>
+<app-password-validator #cpwd [pwd]="pwd" (password)="data($event)" [response]="response"></app-password-validator>
