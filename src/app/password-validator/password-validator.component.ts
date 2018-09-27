@@ -50,7 +50,13 @@ export class PasswordValidatorComponent {
   }
 
   private passwordMatch() {
-    return this.text === (this.pwd ? this.pwd.text : this.cpwd.text);
+    let textToMatch = this.text;
+    if (this.pwd) {
+      textToMatch = this.pwd.text;
+    } else if (this.cpwd) {
+      textToMatch = this.cpwd.text;
+    }
+    return this.text === textToMatch;
   }
 
   onFocus(e) {
