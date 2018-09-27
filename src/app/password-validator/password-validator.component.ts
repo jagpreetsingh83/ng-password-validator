@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, Input } from '@angular/core';
 
 interface Error {
   num: boolean;
@@ -6,6 +6,7 @@ interface Error {
   caps: boolean;
   special: boolean;
   min: boolean;
+  match: boolean;
 }
 
 @Component({
@@ -14,22 +15,41 @@ interface Error {
   styleUrls: ['./password-validator.component.scss']
 })
 export class PasswordValidatorComponent implements OnInit {
+  // Hide and Show of the Error Messages
   show = false;
+
+  // Flag for confirm password field
+  @Input()
+  confirm = false;
+
+  // Password string
+  value: string;
+
+  // Password string to match with
+  @Input()
+  matchWith: string;
+
   error: Error = {
     num: true,
     letter: true,
     caps: false,
     special: false,
-    min: true
+    min: true,
+    match: false
   };
 
   private hasError() {
-    return (
+    let hasError =
       this.error.letter ||
       this.error.min ||
       this.error.num ||
-      this.error.special
-    );
+      this.error.special;
+
+    if (this.confirm) {
+      hasError = hasError || this.error.match;
+    }
+
+    return hasError;
   }
 
   constructor() {}
@@ -61,14 +81,19 @@ export class PasswordValidatorComponent implements OnInit {
   }
 
   onInput(e) {
+    this.value = e.target.value;
+
     const numRegex = /\d/;
     const letterRegex = /[A-Za-z]/;
     const specialRegex = /^[ A-Za-z0-9@!#$]*$/;
-    const text = e.target.value;
 
-    this.error.num = !numRegex.test(text);
-    this.error.letter = !letterRegex.test(text);
-    this.error.special = !specialRegex.test(text);
-    this.error.min = text.length < 8;
+    this.error.num = !numRegex.test(this.value);
+    this.error.letter = !letterRegex.test(this.value);
+    this.error.special = !specialRegex.test(this.value);
+    this.error.min = this.value.length < 8;
+
+    if (this.confirm) {
+      this.error.match = this.value !== this.matchWith;
+    }
   }
 }
