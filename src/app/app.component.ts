@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Response } from '../models/models';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-root',

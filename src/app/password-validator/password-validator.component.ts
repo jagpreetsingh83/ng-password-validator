@@ -7,7 +7,7 @@ import {
   OnInit
 } from '@angular/core';
 import { Error, Response } from '../../models/models';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-password-validator',
