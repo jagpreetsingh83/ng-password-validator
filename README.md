@@ -1,5 +1,23 @@
 # NgPasswordValidator
 
+## Details
+
+This component allows the user to input password and confirm password in an interactive manner.
+
+![Password Validator Screen](screen1.png 'Password Input')
+
+![Password Validator Screen](screen2.png 'Confirm Password Validator')
+
+![Password Validator Screen](screen3.png 'Both Valid')
+
+```html
+<pre>
+{{response | async | json}}
+</pre>
+<app-password-validator #pwd [cpwd]="cpwd" (password)="data($event)"></app-password-validator>
+<app-password-validator #cpwd [pwd]="pwd" (password)="data($event)" [response]="response"></app-password-validator>
+```
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.3.
 
 ## Development server
